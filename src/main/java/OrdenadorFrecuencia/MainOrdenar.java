@@ -1,25 +1,31 @@
 package OrdenadorFrecuencia;
-
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class MainOrdenar {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        OrdenarPorFrecuencia ordenar = new OrdenarPorFrecuencia();
 
-        System.out.println("Ingrese los números separados por espacios:");
-        String entrada = scanner.nextLine();
+        // Leer la cantidad de elementos
+        System.out.print("Ingrese la cantidad de números: ");
+        int n = scanner.nextInt();
+        int[] numeros = new int[n];
 
-        // Convertir la entrada en un arreglo de enteros
-        String[] numerosTexto = entrada.split("\\s+");
-        int[] numeros = Arrays.stream(numerosTexto)
-                .mapToInt(Integer::parseInt)
-                .toArray();
+        // Leer los números
+        System.out.println("Ingrese los números:");
+        for (int i = 0; i < n; i++) {
+            numeros[i] = scanner.nextInt();
+        }
 
-        int[] resultado = ordenar.ordenarElementosPorFrecuencia(numeros);
+        scanner.close();
 
-        System.out.println("Salida ordenada por frecuencia:");
-        System.out.println(Arrays.toString(resultado));
+        // Procesar y ordenar el arreglo usando la clase OrdenadorFrecuencia
+        int[] resultado = OrdenarPorFrecuencia.ordenarPorFrecuencia(numeros);
+
+        // Mostrar el resultado
+        System.out.println("Arreglo ordenado por frecuencia:");
+        for (int num : resultado) {
+            System.out.print(num + " ");
+        }
     }
 }

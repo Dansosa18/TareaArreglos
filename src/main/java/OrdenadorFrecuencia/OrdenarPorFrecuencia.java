@@ -1,48 +1,48 @@
 package OrdenadorFrecuencia;
 
 public class OrdenarPorFrecuencia {
-    public int[] ordenarElementosPorFrecuencia(int[] numeros) {
-        int n = numeros.length;
-        int[] frecuencias = new int[n];
-        int[] resultado = new int[n];
+    public static int[] ordenarPorFrecuencia(int[] nums) {
+        int maxValor = Integer.MIN_VALUE;
 
-        // Contar frecuencias
-        for (int i = 0; i < n; i++) {
-            frecuencias[i] = 1;
-            for (int j = i + 1; j < n; j++) {
-                if (numeros[i] == numeros[j]) {
-                    frecuencias[i]++;
+        // Encontrar el valor máximo para definir el rango de frecuencias
+        for (int num : nums) {
+            if (num > maxValor) maxValor = num;
+        }
+
+        int[] frecuencia = new int[maxValor + 1];
+        int[] orden = new int[nums.length];
+
+        // Contar frecuencia de cada número
+        for (int num : nums) {
+            frecuencia[num]++;
+        }
+
+        // Copiar el arreglo original para mantener el orden de aparición
+        System.arraycopy(nums, 0, orden, 0, nums.length);
+
+        // Ordenar según la frecuencia y el orden de aparición
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (frecuencia[orden[i]] < frecuencia[orden[j]] ||
+                        (frecuencia[orden[i]] == frecuencia[orden[j]] && posicion(nums, orden[i]) > posicion(nums, orden[j]))) {
+                    // Intercambio
+                    int temp = orden[i];
+                    orden[i] = orden[j];
+                    orden[j] = temp;
                 }
             }
         }
 
-        // Crear arreglo de pares (número, frecuencia)
-        int[][] pares = new int[n][2];
-        for (int i = 0; i < n; i++) {
-            pares[i][0] = numeros[i];
-            pares[i][1] = frecuencias[i];
-        }
+        return orden;
+    }
 
-        // Ordenar por frecuencia y mantener el orden relativo
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (pares[j][1] < pares[j + 1][1] ||
-                    (pares[j][1] == pares[j + 1][1] && pares[j][0] > pares[j + 1][0])) {
-                    int[] temp = pares[j];
-                    pares[j] = pares[j + 1];
-                    pares[j + 1] = temp;
-                }
+    // Obtener la primera aparición de un número en el array original
+    public static int posicion(int[] nums, int valor) {
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == valor) {
+                return i;
             }
         }
-
-        // Construir el arreglo resultante
-        int index = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < pares[i][1]; j++) {
-                resultado[index++] = pares[i][0];
-            }
-        }
-
-        return resultado;
+        return -1;
     }
 }
